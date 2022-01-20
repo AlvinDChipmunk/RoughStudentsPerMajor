@@ -92,86 +92,17 @@ Student Name : Justin Conrad
 Course       : COMPSCI 310
 Grade        : 99
 
+Dummy Filler Data lines derived from above knowns
+-1,Unknown Unknown,ZZZZ 9999,-1
+-1,ZZZZ COMPSCI,COMPSCI 000,-1
+-1,ZZZZ APMTH,APMTH 000,-1
+-1,ZZZZ STAT,STAT 000,-1
+
 */
 
 public class StudentsPerMajor {
 
 	public static void main(String[] args) throws IOException {
-		
-		// begin preliminary testing section for converting single line string into useful info
-		
-		// this test block works
-		/*
-		String   testData        = "33,Stewart Reed,STAT 239,90";
-		
-		String[] testDestination = MassageLineData (testData);
-		
-		String   testMajor       = "NOTSET";
-		
-		System.out.println("Before Processing: \n" + testData + "\nMajor: " + testMajor); 
-		
-		System.out.println("\nAfter Processing");
-		testMajor = WhichMajor(testData);
-		
-		System.out.println("studentID     : " + testDestination[0]);
-		System.out.println("studentName   : " + testDestination[1]);
-		System.out.println("currentCourse : " + testDestination[2]);
-		System.out.println("studentGrade  : " + testDestination[3]);
-
-		System.out.println("Major         : " + testMajor);
-		*/
-		
-		// end preliminary testing section for converting single line string into useful info
-		
-		// begin preliminary testing section for reading one file and writing to three different files
-		
-		// this test block works
-		/*
-		String lineFromFile      = "This is pre population junk before the actual reading of a file."; 
-		String studentWhichMajor = "NOTSET";
-		
-		try (
-			BufferedReader fileReaderMaster  = new BufferedReader (new FileReader("student-master-list.csv"));
-			FileWriter     fileWriterCourse1 = new FileWriter     ("test1.csv");
-			FileWriter     fileWriterCourse2 = new FileWriter     ("test2.csv");
-			FileWriter     fileWriterCourse3 = new FileWriter     ("test3.csv"); ) {
-			
-			while ((lineFromFile = fileReaderMaster.readLine()) != null) {
-				//System.out.println(lineFromFile); 
-				
-				studentWhichMajor = WhichMajor(lineFromFile);
-				
-				if        (studentWhichMajor.equals("COMPSCI")) {
-					
-					System.out.println("Writing to test1.csv.");
-					fileWriterCourse1.write(lineFromFile + "\n");
-					
-				} else if (studentWhichMajor.equals("APMTH")) {
-					
-					System.out.println("Writing to test2.csv.");
-					fileWriterCourse2.write(lineFromFile + "\n");
-					
-				} else if (studentWhichMajor.equals("STAT")) {
-					
-					System.out.println("Writing to test3.csv.");
-					fileWriterCourse3.write(lineFromFile + "\n");
-					
-				} else {
-					System.out.println("Invalid line.");
-				}
-				
-			}
-			
-			fileReaderMaster.close();
-			fileWriterCourse1.close();
-			fileWriterCourse2.close();
-			fileWriterCourse3.close();
-		}
-		*/
-		
-		// end preliminary testing section for reading one file and writing to three different files
-		
-		// begin preliminary testing section for reading one file and populating three different object arrays
 
 		String lineFromFile      = "This is pre population junk before the actual reading of a file.";
 		String studentWhichMajor = "NOTSET";	
@@ -194,6 +125,18 @@ public class StudentsPerMajor {
 		for (Student stAPMTH   : stAPMTH_Arr)   { stAPMTH   = new Student(); }
 		for (Student stSTAT    : stSTAT_Arr)    { stSTAT    = new Student(); }
 		
+		// insurance that the three arrays are filled with dummy data and not nulls
+
+		clearStudentArrayEntries ( "-1,ZZZZ COMPSCI,COMPSCI 000,-1", stCOMPSCI_Arr, stCOMPSCI_Index, 105 );
+		stCOMPSCI_Index = 0;
+
+		clearStudentArrayEntries ( "-1,ZZZZ APMTH,APMTH 000,-1", stAPMTH_Arr, stAPMTH_Index, 105 );
+		stAPMTH_Index = 0;
+
+		clearStudentArrayEntries ( "-1,ZZZZ STAT,STAT 000,-1", stSTAT_Arr, stSTAT_Index, 105 );
+		stSTAT_Index = 0;
+
+		// begin file reading and writing
 		try (
 			BufferedReader fileReaderMaster  = new BufferedReader (new FileReader("student-master-list.csv"));
 			FileWriter     fileWriterCourse1 = new FileWriter     ("test1.csv");
@@ -204,17 +147,8 @@ public class StudentsPerMajor {
 			
 			while ((lineFromFile = fileReaderMaster.readLine()) != null) {
 				
-				System.out.println( "Starting line: " + lineFromFile ); 
-				
 				studentWhichMajor = WhichMajor(lineFromFile);
-				System.out.println( "Starting major: " + studentWhichMajor ); 
-				
 				tempStudentInfo   = MassageLineData(lineFromFile); 
-				System.out.println( "Starting Student Data from line: ");
-				System.out.println( "tempStudentInfo[0]: " + tempStudentInfo[0] );
-				System.out.println( "tempStudentInfo[1]: " + tempStudentInfo[1] );
-				System.out.println( "tempStudentInfo[2]: " + tempStudentInfo[2] );
-				System.out.println( "tempStudentInfo[3]: " + tempStudentInfo[3] );
 				
 				if      (studentWhichMajor.equals("COMPSCI")) { stCOMPSCI_Index = insertStudent (stCOMPSCI_Arr, tempStudentInfo, stCOMPSCI_Index); }
 				else if (studentWhichMajor.equals("APMTH"))   { stAPMTH_Index   = insertStudent (stAPMTH_Arr,   tempStudentInfo, stAPMTH_Index);   }
@@ -223,49 +157,18 @@ public class StudentsPerMajor {
 				
 			}
 			
-			// test each array for nulls
-			for (Student compSciStudent : stCOMPSCI_Arr) {
-				String myData = 
-					compSciStudent.getStudentID() + "," +
-					compSciStudent.getStudentName() + "," +
-					compSciStudent.getCurrentCourse() + "," +
-					compSciStudent.getStudentGrade();
-				
-				System.out.println(myData);
-			}
-
-			for (Student APMTHStudent : stAPMTH_Arr) {
-				String myData = 
-					APMTHStudent.getStudentID() + "," +
-					APMTHStudent.getStudentName() + "," +
-					APMTHStudent.getCurrentCourse() + "," +
-					APMTHStudent.getStudentGrade();
-				
-				System.out.println(myData);
-			}
-
-			for (Student statStudent : stSTAT_Arr) {
-				String myData = 
-					statStudent.getStudentID() + "," +
-					statStudent.getStudentName() + "," +
-					statStudent.getCurrentCourse() + "," +
-					statStudent.getStudentGrade();
-				
-				System.out.println(myData);
-			}
-
-			
 			// now sort each array
 			Arrays.sort(stCOMPSCI_Arr);
 			Arrays.sort(stAPMTH_Arr);
 			Arrays.sort(stSTAT_Arr);
-			
+
 			// now write from each array to the corresponding file
 			String myString;
 			
-			Integer maxStCOMPSCI_Index = stCOMPSCI_Index; 
-			Integer maxStAPMTH_Index   = stAPMTH_Index;
-			Integer maxStSTAT_Index    = stSTAT_Index;
+			Integer maxStCOMPSCI_Index = stCOMPSCI_Index - 1; 
+			Integer maxStAPMTH_Index   = stAPMTH_Index   - 1;
+			Integer maxStSTAT_Index    = stSTAT_Index    - 1;
+			// discovery by trial and error - returned indexes are one bigger than actual true data 
 			
 			// now reset indexes so we can travel up each array appropriately
 			stCOMPSCI_Index  = 0;
@@ -308,8 +211,6 @@ public class StudentsPerMajor {
 			fileWriterCourse3.close();
 		}
 		
-		
-		// end preliminary testing section for reading one file and populating three different object arrays
 	}
 
 	public static String[] MassageLineData (String lineData) {
@@ -338,15 +239,32 @@ public class StudentsPerMajor {
 		
 		return thisMajor;
 	}
-	
+
 	public static Integer insertStudent (Student[] studentList, String[] studentInfo, int listIndex) {
-				
+		
+		// helper method to insert student line into the correct student list
+		
 		studentList [ listIndex ] = new Student(studentInfo);	
 		listIndex ++;
 		
 		return listIndex;
 	}
 	
-
+	public static void clearStudentArrayEntries (
+			String clearingLine,
+			Student[] studentArray, 
+			int arrrayIndex, 
+			int maxArrayValue
+		) {
+		
+		// helper method to clear out the three arrays from any null portions
+		// such null portions, whole lines or individual fields, screw up comparing functions
+		
+		String[] infoArray = new String [4];
+		infoArray = MassageLineData(clearingLine);
+		while (arrrayIndex < maxArrayValue) { 
+			arrrayIndex = insertStudent (studentArray, infoArray, arrrayIndex); 
+		}
+	}
 	
 }
