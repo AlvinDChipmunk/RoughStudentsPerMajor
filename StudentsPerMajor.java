@@ -139,9 +139,9 @@ public class StudentsPerMajor {
 		// begin file reading and writing
 		try (
 			BufferedReader fileReaderMaster  = new BufferedReader (new FileReader("student-master-list.csv"));
-			FileWriter     fileWriterCourse1 = new FileWriter     ("test1.csv");
-			FileWriter     fileWriterCourse2 = new FileWriter     ("test2.csv");
-			FileWriter     fileWriterCourse3 = new FileWriter     ("test3.csv");) {
+			FileWriter     fileWriterCourse1 = new FileWriter     ("course1.csv");
+			FileWriter     fileWriterCourse2 = new FileWriter     ("course2.csv");
+			FileWriter     fileWriterCourse3 = new FileWriter     ("course3.csv");) {
 
 			// first populate the three arrays 
 			
